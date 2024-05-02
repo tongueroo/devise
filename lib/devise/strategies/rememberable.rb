@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'devise/strategies/authenticatable'
+require "devise/strategies/authenticatable"
 
 module Devise
   module Strategies
@@ -19,14 +19,19 @@ module Devise
       # the record in the database. If the attempt fails, we pass to another
       # strategy handle the authentication.
       def authenticate!
+        puts "Rememberable#authenticate! 1 #{Time.now}"
         resource = mapping.to.serialize_from_cookie(*remember_cookie)
 
+        puts "Rememberable#authenticate! 2 #{Time.now} #{resource.inspect}"
         unless resource
+          puts "Rememberable#authenticate! 3 #{Time.now}"
           cookies.delete(remember_key)
           return pass
         end
 
+        puts "Rememberable#authenticate! 4 #{Time.now}"
         if validate(resource)
+          puts "Rememberable#authenticate! 5 #{Time.now}"
           remember_me(resource) if extend_remember_me?(resource)
           resource.after_remembered
           success!(resource)
@@ -42,7 +47,7 @@ module Devise
         false
       end
 
-    private
+      private
 
       def extend_remember_me?(resource)
         resource.respond_to?(:extend_remember_period) && resource.extend_remember_period
@@ -59,7 +64,6 @@ module Devise
       def remember_cookie
         @remember_cookie ||= cookies.signed[remember_key]
       end
-
     end
   end
 end
