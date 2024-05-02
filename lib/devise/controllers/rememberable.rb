@@ -40,7 +40,7 @@ module Devise
       end
 
       def remember_cookie_values(resource)
-        options = { httponly: true }
+        options = {httponly: true}
         options.merge!(forget_cookie_values(resource))
         options.merge!(
           value: resource.class.serialize_into_cookie(resource),
@@ -49,7 +49,8 @@ module Devise
       end
 
       def remember_key(resource, scope)
-        resource.rememberable_options.fetch(:key, "remember_#{scope}_token")
+        # resource.rememberable_options.fetch(:key, "remember_#{scope}_token")
+        resource.rememberable_options.fetch(:key, "remember_#{scope}_token_test")
       end
     end
   end
